@@ -27,8 +27,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +45,18 @@ public class Event {
 
     private String title;
     private Date date;
+    private User user;
+
+    @ManyToOne
+    @JoinColumn( name="user_id",
+    		foreignKey=@ForeignKey(name="USER_ID_FK") )
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public Event() {
 		// this form used by Hibernate

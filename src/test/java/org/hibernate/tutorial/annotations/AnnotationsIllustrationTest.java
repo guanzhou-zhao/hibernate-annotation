@@ -100,9 +100,64 @@ public class AnnotationsIllustrationTest extends TestCase {
 		// now lets pull events from the database and list them
 		session = sessionFactory.openSession();
         session.beginTransaction();
-        List<User> result = session.createQuery( "from User", User.class ).list();
-		for ( User user : result ) {
+        List<User> users = session.createQuery( "from User", User.class ).list();
+        List<Event> events= session.createQuery( "from Event", Event.class ).list();
+        
+		for ( User user : users ) {
 			System.out.println( "User (" + user.getDate() + ") : " + user.getName() );
+		}
+		User user = users.get(0);
+		
+		for (Event event : events) {
+			event.setUser(user);
+			session.save(event);
+		}
+        session.getTransaction().commit();
+        session.close();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+	public void testAssociation() {
+		// create a couple of events...
+				Session session = sessionFactory.openSession();
+				session.beginTransaction();
+				session.save( new Event( "Our very first event!", new Date() ) );
+				session.save( new Event( "A follow up event", new Date() ) );
+				session.getTransaction().commit();
+				session.close();
+				
+				// create a couple of events...
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+				session.save( new User("Ben", new Date() ) );
+				session.save( new User("Wen", new Date() ) );
+				session.getTransaction().commit();
+				session.close();
+
+				// now lets pull events from the database and list them
+				session = sessionFactory.openSession();
+		        session.beginTransaction();
+		        List<User> users = session.createQuery( "from User", User.class ).list();
+		        List<Event> events= session.createQuery( "from Event", Event.class ).list();
+		        
+				for ( User user : users ) {
+					System.out.println( "User (" + user.getDate() + ") : " + user.getName() );
+				}
+				User user = users.get(0);
+				
+				for (Event event : events) {
+					event.setUser(user);
+					session.save(event);
+				}
+		        session.getTransaction().commit();
+		        session.close();
+
+		// now lets pull events from the database and list them
+		session = sessionFactory.openSession();
+        session.beginTransaction();
+        List result = session.createQuery( "from Event" ).list();
+		for ( Event event : (List<Event>) result ) {
+			System.out.println( "User: " + event.getUser().getName() + " Event (" + event.getDate() + ") : " + event.getTitle() );
 		}
         session.getTransaction().commit();
         session.close();
