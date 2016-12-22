@@ -27,10 +27,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,7 +37,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table( name = "EVENTS" )
+@Table( name = "EVENT" )
 public class Event {
     private Long id;
 
@@ -48,8 +46,6 @@ public class Event {
     private User user;
 
     @ManyToOne
-    @JoinColumn( name="user_id",
-    		foreignKey=@ForeignKey(name="USER_ID_FK") )
 	public User getUser() {
 		return user;
 	}

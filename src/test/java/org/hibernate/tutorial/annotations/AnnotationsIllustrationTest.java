@@ -51,10 +51,12 @@ public class AnnotationsIllustrationTest extends TestCase {
 				.build();
 		try {
 			sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+			System.out.println(sessionFactory + "--------------sess");
 		}
 		catch (Exception e) {
 			// The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
 			// so destroy it manually.
+			System.out.println(e);
 			StandardServiceRegistryBuilder.destroy( registry );
 		}
 	}
@@ -116,7 +118,7 @@ public class AnnotationsIllustrationTest extends TestCase {
         session.close();
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+	@SuppressWarnings({ "deprecation" })
 	public void testAssociation() {
 		// create a couple of events...
 				Session session = sessionFactory.openSession();
@@ -151,16 +153,21 @@ public class AnnotationsIllustrationTest extends TestCase {
 				}
 		        session.getTransaction().commit();
 		        session.close();
-
-		// now lets pull events from the database and list them
-		session = sessionFactory.openSession();
-        session.beginTransaction();
-        List result = session.createQuery( "from Event" ).list();
-		for ( Event event : (List<Event>) result ) {
-			System.out.println( "User: " + event.getUser().getName() + " Event (" + event.getDate() + ") : " + event.getTitle() );
-		}
-        session.getTransaction().commit();
-        session.close();
+		        
+		        session = sessionFactory.openSession();
+		        session.beginTransaction();
+		        users = session.createQuery( "from User", User.class ).list();
+		        
+				for ( User user1 : users ) {
+					System.out.println( "User (" + user1.getDate() + ") : " + user1.getName() );
+					
+					for (Event event : user1.getEvents()) {
+						System.out.println( "Event (" + event.getDate() + ") : " + event.getTitle() );
+					}
+				}
+				
+		        session.getTransaction().commit();
+		        session.close();
 	}
 
 }
