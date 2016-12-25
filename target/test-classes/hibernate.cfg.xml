@@ -34,10 +34,12 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create</property>
 
-        <!-- Names the annotated entity class -->
+        <!-- Names the annotated entity class 
         <mapping class="org.hibernate.tutorial.annotations.Event"/>
-        <mapping class="org.hibernate.tutorial.annotations.User"/>
-
+        <mapping class="org.hibernate.tutorial.annotations.User"/>-->
+        <mapping class="org.hibernate.tutorial.annotations.Company"/>
+        <mapping class="org.hibernate.tutorial.annotations.CompanyDetail"/>
+		
     </session-factory>
 
 </hibernate-configuration>
