@@ -1,1 +1,4 @@
+# ignore target folder #
+
 target
+*.class
