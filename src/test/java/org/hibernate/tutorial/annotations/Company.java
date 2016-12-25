@@ -2,11 +2,11 @@ package org.hibernate.tutorial.annotations;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -19,13 +19,15 @@ public class Company {
 	@Column(name="id")
 	private long id;
 	
-	@OneToOne
-	@JoinColumn(name="detail_id")
+	@OneToOne(cascade=CascadeType.ALL)
 	private CompanyDetail companyDetail;
 	public CompanyDetail getCompanyDetail() {
 		return companyDetail;
 	}
-
+	public void addDetail(CompanyDetail detail) {
+		detail.setCompany(this);
+		this.companyDetail = detail;
+	}
 	public void setCompanyDetail(CompanyDetail companyDetail) {
 		this.companyDetail = companyDetail;
 	}
@@ -66,7 +68,7 @@ public class Company {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.name + " company's address is at " + this.companyDetail.getAddress();
+		return this.name + " company's address is at " + this.getCompanyDetail().getAddress();
 	}
 
 	public Company() {

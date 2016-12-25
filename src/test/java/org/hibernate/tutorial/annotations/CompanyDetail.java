@@ -1,9 +1,11 @@
 package org.hibernate.tutorial.annotations;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,8 +16,18 @@ public class CompanyDetail {
 	@GeneratedValue
 	@Column(name="id")
 	private long id;
+	
+	@OneToOne(mappedBy="companyDetail", cascade=CascadeType.ALL)
+	private Company company;
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	public CompanyDetail() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public CompanyDetail(String address) {
@@ -29,8 +41,7 @@ public class CompanyDetail {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "company detail's content is address at " + this.address;
+		return "company detail's content is address at " + this.address + ", which is occupied by company named " + this.company.getName();
 	}
 
 	public void setId(long id) {
